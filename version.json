@@ -34,7 +34,13 @@
           "paper/sand1.png",
           "paper/desert_objects/cactoo.png"
         ]
-      }
+      },
+       "paper/entitys": {
+        "version": "1.0",
+        "files": [
+          "paper/entitys/scorpion.png"
+        ]
+      },
     }
   }
 }
