@@ -2,11 +2,11 @@
   "groups": {
     "sounds": {
       "weapons": {
-        "version": "1.0",
+        "version": "1.2",
         "files": ["riffle shooting.m4a"]
       },
       "steps/sand": {
-        "version": "1.0",
+        "version": "1.2",
         "files": [
           "steps/sand/sand-step1.m4a",
           "steps/sand/sand-step2.m4a",
@@ -19,7 +19,7 @@
     },
     "sprites": {
       "paper/alpha": {
-        "version": "1.0",
+        "version": "1.2",
         "files": [
           "paper/alpha/happy_alpha.png",
           "paper/alpha/riffle_alpha.png",
@@ -28,15 +28,15 @@
         ]
       },
       "paper/objects": {
-        "version": "1.0",
+        "version": "1.2",
         "files": [
           "paper/gun_fire.png",
           "paper/sand1.png",
           "paper/desert_objects/cactoo.png"
         ]
       },
-       "paper/entitys": {
-        "version": "1.0",
+      "paper/entitys": {
+        "version": "1.5",
         "files": [
           "paper/entitys/scorpion.png"
         ]
