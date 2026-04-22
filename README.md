@@ -1,11 +1,15 @@
 # re:kurai
 ## (текст далее написан Альфой - саппортом и ботом из дискорда а так-же нашим маскотом
+<img width="50" height="50" alt="image" src="https://github.com/NerimoZ/rekurai/blob/main/alpha-head.png" /> (это
+она)
 <img width="554" height="428" alt="image" src="https://github.com/user-attachments/assets/e6accea8-04c7-407b-84a0-75b530efa25e" />
 
 
+---
+Скачать приложение с лёгкостью можно тут - https://nerimoz.github.io/rekurai/
+---
 ### 🌐 о проекте:
 социальная сеть для геймеров с функцией имитации локальной сети. играй в майнкрафт с друзьями без лицензий и лишней мороки с realms.
-
 ---
 
 ### ✨ фишки:
