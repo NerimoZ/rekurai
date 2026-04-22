@@ -6,33 +6,27 @@
     <title>re:kurai — больше, чем просто соцсеть</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        html {
-            scroll-behavior: smooth;
-            scrollbar-width: thin;
-            scrollbar-color: #333 transparent;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #333 transparent;
+        }
+
+        ::-webkit-scrollbar {width: 6px;}
+        ::-webkit-scrollbar-track {background: transparent;}
+        ::-webkit-scrollbar-thumb {background: #333; border-radius: 3px;}
+        ::-webkit-scrollbar-thumb:hover {background: #555;}
+
         body {
-            font-family: 'Outfit', sans-serif;
             background-color: #000;
             color: #ffffff;
+            font-family: 'Outfit', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -45,14 +39,12 @@
 
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 100;
-            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 16px 40px;
             background: rgba(5,5,5,0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -63,9 +55,7 @@
             font-weight: 800;
             letter-spacing: -1px;
         }
-        .logo span {
-            color: #7b5ea7;
-        }
+        .logo span {color: #7b5ea7;}
         .nav-links a {
             color: #666;
             text-decoration: none;
@@ -74,9 +64,7 @@
             font-weight: 600;
             transition: color 0.3s ease;
         }
-        .nav-links a:hover {
-            color: #fff;
-        }
+        .nav-links a:hover {color: #fff;}
 
         .hero {
             position: relative;
@@ -90,9 +78,7 @@
             background-size: cover;
             background-position: center;
         }
-        .hero-content {
-            max-width: 560px;
-        }
+        .hero-content {max-width: 560px;}
         .hero h1 {
             font-size: 56px;
             font-weight: 800;
@@ -114,6 +100,7 @@
             gap: 14px;
             flex-wrap: wrap;
         }
+
         .btn {
             padding: 14px 28px;
             border-radius: 12px;
@@ -143,6 +130,7 @@
             transform: translateY(-2px);
         }
 
+        /* оверлеи */
         .dl-overlay {
             position: fixed;
             inset: 0;
@@ -162,6 +150,7 @@
             visibility: visible;
         }
         .dl-box {
+            position: relative;
             background: rgba(20,20,20,0.55);
             backdrop-filter: blur(40px) saturate(1.2);
             -webkit-backdrop-filter: blur(40px) saturate(1.2);
@@ -170,7 +159,6 @@
             padding: 36px;
             max-width: 420px;
             width: 90vw;
-            position: relative;
             transform: scale(0.92) translateY(12px);
             opacity: 0;
             transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
@@ -201,15 +189,15 @@
             background: rgba(255,255,255,0.12);
             color: #fff;
         }
+
+        /* шаги скачивания */
         .dl-step {
             display: none;
             opacity: 0;
             transform: translateX(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .dl-step.active {
-            display: block;
-        }
+        .dl-step.active {display: block;}
         .dl-step.visible {
             opacity: 1;
             transform: translateX(0);
@@ -232,12 +220,9 @@
             line-height: 1;
             transition: color 0.2s;
         }
-        .dl-back-arrow:hover {
-            color: #fff;
-        }
-        .dl-step-mobile .dl-back-arrow {
-            display: none;
-        }
+        .dl-back-arrow:hover {color: #fff;}
+        .dl-step-mobile .dl-back-arrow {display: none;}
+
         .dl-platforms {
             display: flex;
             gap: 14px;
@@ -268,6 +253,7 @@
             font-weight: 600;
             font-size: 15px;
         }
+
         .dl-options {
             display: flex;
             flex-direction: column;
@@ -307,15 +293,14 @@
             opacity: 0.5;
             transition: opacity 0.2s;
         }
-        .dl-option:hover .dl-option-logo {
-            opacity: 1;
-        }
+        .dl-option:hover .dl-option-logo {opacity: 1;}
         .dl-option strong {
             display: block;
             font-size: 15px;
             margin-bottom: 2px;
         }
 
+        /* фичи */
         .section-title {
             font-size: 40px;
             font-weight: 800;
@@ -323,7 +308,6 @@
             text-align: center;
             margin-top: 120px;
         }
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -359,6 +343,7 @@
             line-height: 1.65;
         }
 
+        /* скрины */
         .screenshots-grid {
             display: flex;
             flex-direction: column;
@@ -376,17 +361,13 @@
             border: 1px solid #1a1a1a;
             transition: border-color 0.3s ease;
         }
-        .screenshot-item:hover {
-            border-color: #333;
-        }
+        .screenshot-item:hover {border-color: #333;}
         .screenshot-item img {
             width: 100%;
             display: block;
             transition: transform 0.4s ease;
         }
-        .screenshot-item:hover img {
-            transform: scale(1.04);
-        }
+        .screenshot-item:hover img {transform: scale(1.04);}
         .screenshot-item::after {
             content: '⤢';
             position: absolute;
@@ -405,9 +386,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .screenshot-item:hover::after {
-            opacity: 1;
-        }
+        .screenshot-item:hover::after {opacity: 1;}
 
         .lightbox {
             display: none;
@@ -421,9 +400,7 @@
             cursor: zoom-out;
             animation: fadeIn 0.25s ease;
         }
-        .lightbox.active {
-            display: flex;
-        }
+        .lightbox.active {display: flex;}
         .lightbox img {
             max-width: 90vw;
             max-height: 90vh;
@@ -447,9 +424,7 @@
             justify-content: center;
             transition: background 0.2s;
         }
-        .lightbox-close:hover {
-            background: rgba(255,255,255,0.2);
-        }
+        .lightbox-close:hover {background: rgba(255,255,255,0.2);}
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -457,21 +432,13 @@
         }
 
         @media (max-width: 900px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .screenshots-grid {
-                max-width: 480px;
-            }
+            .features-grid {grid-template-columns: 1fr;}
+            .screenshots-grid {max-width: 480px;}
         }
 
         @media (max-width: 600px) {
-            nav {
-                padding: 12px 16px;
-            }
-            .logo {
-                font-size: 20px;
-            }
+            nav {padding: 12px 16px;}
+            .logo {font-size: 20px;}
             .nav-links a {
                 margin-left: 16px;
                 font-size: 13px;
@@ -492,8 +459,6 @@
             .hero-content {
                 position: relative;
                 z-index: 1;
-            }
-            .hero-content {
                 max-width: 100%;
             }
             .hero h1 {
@@ -529,19 +494,11 @@
                 padding: 28px 24px;
                 border-radius: 18px;
             }
-            .feature-card h3 {
-                font-size: 20px;
-            }
-            .feature-card p {
-                font-size: 14px;
-            }
+            .feature-card h3 {font-size: 20px;}
+            .feature-card p {font-size: 14px;}
 
-            .screenshots-grid {
-                max-width: 100%;
-            }
-            .screenshot-item::after {
-                opacity: 1;
-            }
+            .screenshots-grid {max-width: 100%;}
+            .screenshot-item::after {opacity: 1;}
 
             .lightbox-close {
                 top: 12px;
@@ -554,7 +511,6 @@
                 max-height: 85vh;
                 border-radius: 8px;
             }
-
         }
     </style>
 </head>
