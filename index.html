@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re:kurai — больше, чем просто соцсеть</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #333 transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5,5,5,0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        .logo span {
+            color: #7b5ea7;
+        }
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            margin-left: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .hero {
+            position: relative;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 60px 80px;
+            background: url('https://raw.githubusercontent.com/NerimoZ/rekurai/main/page-assets/alpha-main-banner.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-content {
+            max-width: 560px;
+        }
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 0 2px 40px rgba(0,0,0,0.6);
+        }
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 36px;
+            line-height: 1.7;
+            text-shadow: 0 1px 20px rgba(0,0,0,0.5);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #fff;
+            color: #000;
+        }
+        .btn-primary:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+        .btn-secondary:hover {
+            border-color: rgba(255,255,255,0.4);
+            background-color: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+        }
+
+        .dl-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .dl-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .dl-box {
+            background: rgba(20,20,20,0.55);
+            backdrop-filter: blur(40px) saturate(1.2);
+            -webkit-backdrop-filter: blur(40px) saturate(1.2);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 36px;
+            max-width: 420px;
+            width: 90vw;
+            position: relative;
+            transform: scale(0.92) translateY(12px);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .dl-overlay.active .dl-box {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .dl-box-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.06);
+            border: none;
+            border-radius: 10px;
+            color: #777;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .dl-box-close:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+        .dl-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .dl-step.active {
+            display: block;
+        }
+        .dl-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .dl-box h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dl-back-arrow {
+            background: none;
+            border: none;
+            color: #555;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .dl-back-arrow:hover {
+            color: #fff;
+        }
+        .dl-step-mobile .dl-back-arrow {
+            display: none;
+        }
+        .dl-platforms {
+            display: flex;
+            gap: 14px;
+        }
+        .dl-platform-card {
+            flex: 1;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            padding: 28px 16px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+        .dl-platform-card:hover {
+            border-color: rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+        }
+        .dl-platform-card svg {
+            width: 44px;
+            height: 44px;
+            margin-bottom: 14px;
+        }
+        .dl-platform-card span {
+            display: block;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .dl-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .dl-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+        .dl-option:hover {
+            border-color: rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        }
+        .dl-option strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .dl-option span {
+            color: #888;
+            font-size: 13px;
+        }
+        .dl-option-logo {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .dl-option:hover .dl-option-logo {
+            opacity: 1;
+        }
+        .dl-option strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            margin-top: 120px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background-color: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 24px;
+            padding: 40px 36px;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .feature-card img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-bottom: 24px;
+        }
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+        .feature-card p {
+            color: #999;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .screenshots-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 40px;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .screenshot-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #1a1a1a;
+            transition: border-color 0.3s ease;
+        }
+        .screenshot-item:hover {
+            border-color: #333;
+        }
+        .screenshot-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .screenshot-item:hover img {
+            transform: scale(1.04);
+        }
+        .screenshot-item::after {
+            content: '⤢';
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .screenshot-item:hover::after {
+            opacity: 1;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            animation: fadeIn 0.25s ease;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .screenshots-grid {
+                max-width: 480px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 12px 16px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .nav-links a {
+                margin-left: 16px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 90px 20px 50px;
+                min-height: 70vh;
+                background-position: 80% center;
+            }
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 0;
+            }
+            .hero-content {
+                position: relative;
+                z-index: 1;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+            .hero h1 {
+                font-size: 30px;
+                letter-spacing: -1px;
+                margin-bottom: 12px;
+            }
+            .hero p {
+                font-size: 14px;
+                margin-bottom: 24px;
+                line-height: 1.5;
+            }
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn {
+                text-align: center;
+                padding: 14px 24px;
+            }
+
+            .section-title {
+                font-size: 28px;
+                margin-top: 70px;
+                margin-bottom: 32px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .feature-card {
+                padding: 28px 24px;
+                border-radius: 18px;
+            }
+            .feature-card h3 {
+                font-size: 20px;
+            }
+            .feature-card p {
+                font-size: 14px;
+            }
+
+            .screenshots-grid {
+                max-width: 100%;
+            }
+            .screenshot-item::after {
+                opacity: 1;
+            }
+
+            .lightbox-close {
+                top: 12px;
+                right: 12px;
+                width: 40px;
+                height: 40px;
+            }
+            .lightbox img {
+                max-width: 95vw;
+                max-height: 85vh;
+                border-radius: 8px;
+            }
+
+        }
+    </style>
+</head>
+<body>
+
+    <!-- навбар -->
+    <nav>
+        <div class="logo">re:<span>kurai</span></div>
+        <div class="nav-links">
+            <a href="#">Главная</a>
+            <a href="#features">Возможности</a>
+            <a href="#" id="socials-btn">Соцсети</a>
+        </div>
+    </nav>
+
+    <!-- главный баннер -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Твой портал в миры</h1>
+            <p>Социальная сеть для геймеров. Играй вместе с друзьями, учавствуй в событиях, публикуй тайлы и прокачивай свой профиль!</p>
+            <div class="buttons">
+                <button class="btn btn-primary" id="download-btn">Скачать</button>
+                <button class="btn btn-secondary" id="socials-hero-btn">Соцсети</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- потом!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! сделатьнорм описание в экосистеме -->
+    <section class="container" id="features">
+        <h2 class="section-title">Экосистема re:kurai</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/page-assets/rooms.png" alt="Комнаты">
+                <h3>Комнаты</h3>
+                <p>Создай свою комнату или зайди в чужую. Находи новых друзей или играй вместе с существующими.</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/page-assets/profile2.png" alt="Профиль">
+                <h3>Профиль</h3>
+                <p>Твоя страница. Уровень, рамки, стикеры, витрина с музыкой и друзьями. Прокачивай и кастомизируй как хочешь.</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/page-assets/tiles.png" alt="Тайлы">
+                <h3>Тайлы</h3>
+                <p>Короткие посты, где каждый сможет рассказать маленькую историю или просто поделиться своими мыслями</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/page-assets/events.png" alt="Ивенты">
+                <h3>События</h3>
+                <p>В приложении постоянно происходят какие-то события - от простых ежедневных наград до целых мини-игр и соревнований!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- скрины -->
+    <section class="container" style="padding-bottom: 120px;">
+        <h2 class="section-title">Интерфейс</h2>
+        <div class="screenshots-grid">
+            <div class="screenshot-item" onclick="openLightbox(this)">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/screenshot/home-screen.png" alt="Главная">
+            </div>
+            <div class="screenshot-item" onclick="openLightbox(this)">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/screenshot/profile-screen.png" alt="Профиль">
+            </div>
+            <div class="screenshot-item" onclick="openLightbox(this)">
+                <img src="https://raw.githubusercontent.com/NerimoZ/rekurai/main/screenshot/tiles-screen.png" alt="Тайлы">
+            </div>
+        </div>
+    </section>
+
+    <!-- соцсети попап -->
+    <div class="dl-overlay" id="socials-overlay">
+        <div class="dl-box">
+            <button class="dl-box-close" id="socials-close">✕</button>
+            <h3>Соцсети</h3>
+            <div class="dl-options">
+                <a href="https://discord.gg/k6Ag25WJFv" target="_blank" class="dl-option">
+                    <svg class="dl-option-logo" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.09 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.996.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.3 12.3 0 01-1.873.892.077.077 0 00-.041.107c.36.689.772 1.36 1.225 1.996a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    <strong>Discord</strong>
+                </a>
+                <a href="https://t.me/kuraipe" target="_blank" class="dl-option">
+                    <svg class="dl-option-logo" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.504-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <strong>Telegram</strong>
+                </a>
+                <a href="https://www.youtube.com/@rekurai" target="_blank" class="dl-option">
+                    <svg class="dl-option-logo" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <strong>YouTube</strong>
+                </a>
+                <a href="https://vk.com/kuraipe" target="_blank" class="dl-option">
+                    <svg class="dl-option-logo" viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.12-5.335-3.202C4.624 10.857 3.996 8.57 3.996 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.372 2.151-3.49 2.151-3.49.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/></svg>
+                    <strong>ВКонтакте</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- скачать попап -->
+    <div class="dl-overlay" id="dl-overlay">
+        <div class="dl-box">
+            <button class="dl-box-close" id="dl-close">✕</button>
+            <div class="dl-step active visible" id="dl-step-1">
+                <h3>Выберите платформу</h3>
+                <div class="dl-platforms">
+                    <div class="dl-platform-card" data-platform="windows">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M3 5.5L10.5 4.3V11.5H3V5.5ZM11.5 4.1L21 2.5V11.5H11.5V4.1ZM21 12.5L11.5 13.1V19.9L21 21.5V12.5ZM10.5 13.2L3 14.5V18.5L10.5 19.7V13.2Z" fill="currentColor"/>
+                        </svg>
+                        <span>Windows</span>
+                    </div>
+                    <div class="dl-platform-card" data-platform="android">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M17.6 9.5L19.5 6.2C19.6 6 19.5 5.7 19.3 5.6C19.1 5.5 18.8 5.6 18.7 5.8L16.7 9.2C15.2 8.5 13.6 8.1 11.9 8.1C10.2 8.1 8.6 8.5 7.1 9.2L5.1 5.8C5 5.6 4.7 5.5 4.5 5.6C4.3 5.7 4.2 6 4.3 6.2L6.2 9.5C2.8 11.3 0.5 14.7 0 18.8H23.8C23.3 14.7 21 11.3 17.6 9.5ZM6.5 15.8C5.8 15.8 5.3 15.3 5.3 14.6C5.3 13.9 5.8 13.4 6.5 13.4C7.2 13.4 7.7 13.9 7.7 14.6C7.7 15.3 7.2 15.8 6.5 15.8ZM17.3 15.8C16.6 15.8 16.1 15.3 16.1 14.6C16.1 13.9 16.6 13.4 17.3 13.4C18 13.4 18.5 13.9 18.5 14.6C18.5 15.3 18 15.8 17.3 15.8Z" fill="currentColor"/>
+                        </svg>
+                        <span>Android</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dl-step" id="dl-step-windows">
+                <h3><button class="dl-back-arrow" data-back>←</button>Windows</h3>
+                <div class="dl-options">
+                    <a href="#" class="dl-option">
+                        <strong>Установщик</strong>
+                        <span>.EXE — автоматическая установка</span>
+                    </a>
+                    <a href="#" class="dl-option">
+                        <strong>Архив</strong>
+                        <span>.ZIP — распакуй и запусти</span>
+                    </a>
+                </div>
+            </div>
+            <div class="dl-step" id="dl-step-android">
+                <h3><button class="dl-back-arrow" data-back>←</button>Android</h3>
+                <div class="dl-options">
+                    <a href="#" class="dl-option">
+                        <strong>Скачать APK</strong>
+                        <span>Установи вручную</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- лайтбокс -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <!-- логика -->
+    <script>
+        function openLightbox(el) {
+            var img = el.querySelector('img');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        function openOverlay(overlay) {
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeOverlay(overlay) {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        var socialsOverlay = document.getElementById('socials-overlay');
+        var socialsClose = document.getElementById('socials-close');
+        var socialsBtn = document.getElementById('socials-btn');
+
+        socialsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openOverlay(socialsOverlay);
+        });
+        var socialsHeroBtn = document.getElementById('socials-hero-btn');
+        socialsHeroBtn.addEventListener('click', function() { openOverlay(socialsOverlay); });
+        socialsClose.addEventListener('click', function() { closeOverlay(socialsOverlay); });
+        socialsOverlay.addEventListener('click', function(e) {
+            if (e.target === socialsOverlay) closeOverlay(socialsOverlay);
+        });
+
+        var dlOverlay = document.getElementById('dl-overlay');
+        var dlClose = document.getElementById('dl-close');
+        var dlBtn = document.getElementById('download-btn');
+
+        function showStep(stepId) {
+            var steps = document.querySelectorAll('.dl-step');
+            steps.forEach(function(s) {
+                s.classList.remove('visible');
+                setTimeout(function() { s.classList.remove('active'); }, 150);
+            });
+            setTimeout(function() {
+                var target = document.getElementById(stepId);
+                target.classList.add('active');
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        target.classList.add('visible');
+                    });
+                });
+            }, 180);
+        }
+
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 600;
+        }
+
+        function openDl() {
+            var mobile = isMobileDevice();
+            var startStep = mobile ? 'dl-step-android' : 'dl-step-1';
+            var androidStep = document.getElementById('dl-step-android');
+            if (mobile) {
+                androidStep.classList.add('dl-step-mobile');
+            } else {
+                androidStep.classList.remove('dl-step-mobile');
+            }
+            var first = document.getElementById(startStep);
+            document.querySelectorAll('.dl-step').forEach(function(s) {
+                s.classList.remove('active', 'visible');
+            });
+            first.classList.add('active');
+            dlOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                    first.classList.add('visible');
+                });
+            });
+        }
+        function closeDl() {
+            document.querySelectorAll('.dl-step').forEach(function(s) { s.classList.remove('visible'); });
+            dlOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        dlBtn.addEventListener('click', openDl);
+        dlClose.addEventListener('click', closeDl);
+        dlOverlay.addEventListener('click', function(e) {
+            if (e.target === dlOverlay) closeDl();
+        });
+
+        document.querySelectorAll('.dl-platform-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                showStep('dl-step-' + card.dataset.platform);
+            });
+        });
+
+        document.querySelectorAll('.dl-back-arrow').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showStep('dl-step-1');
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (dlOverlay.classList.contains('active')) closeDl();
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+</html>
